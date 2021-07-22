@@ -39,5 +39,16 @@ def RandomFriendDegreeDistribution(G):
     return pmf
 
 def SizeBiasedDegreeDistribution(G):
-    pass
+    # get normal degree distribution
+    pmf_normal = DegreeDistribution(G)
+
+    # get expectation of normal distribution
+    expectation = sum(p*k for (p,k) in pmf_normal.items())
+
+    # apply size-biased definition (1.2.2)
+    pmf = {}
+    for k in pmf_normal:
+        pmf[k] = (k/expectation) * pmf_normal[k]
+    
+    return pmf
 

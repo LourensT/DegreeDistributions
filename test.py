@@ -32,5 +32,14 @@ else:
     print("1. test of RandomFriendDegreeDistribution: FAILED")
     tests += 1
 
+w = SizeBiasedDegreeDistribution(G)
+if test_sums_to_one(w):
+    print("1. test of SizeBiasedDegreeDistribution: PASSED")
+    score += 1
+    tests += 1
+else:
+    print("1. test of SizeBiasedDegreeDistribution: FAILED")
+    tests += 1
+
 print('\n')
 print("Test Results: {} out of {} tests passed.".format(score, tests))
