@@ -2,6 +2,8 @@ from DegreeDistributions import DegreeDistribution, SizeBiasedDegreeDistribution
 
 import networkx as nx
 
+import matplotlib.pyplot as plt
+
 def test_sums_to_one(pmf_dict, epsilon = 0.00001):
     probability_sum = sum(pmf_dict.values())
     if abs(probability_sum - 1) < epsilon:
@@ -12,7 +14,7 @@ def test_sums_to_one(pmf_dict, epsilon = 0.00001):
 score = 0
 tests = 0
 
-G = nx.erdos_renyi_graph(100, 0.7)
+G = nx.erdos_renyi_graph(1000, 0.3)
 
 u = DegreeDistribution(G)
 if test_sums_to_one(u):
@@ -40,6 +42,11 @@ if test_sums_to_one(w):
 else:
     print("1. test of SizeBiasedDegreeDistribution: FAILED")
     tests += 1
+
+plt.scatter(x=u.keys(), y=u.values(), color='blue')
+plt.scatter(x=v.keys(), y=v.values(), color='red')
+plt.scatter(x=w.keys(), y=w.values(), color='green')
+plt.show()
 
 print('\n')
 print("Test Results: {} out of {} tests passed.".format(score, tests))
