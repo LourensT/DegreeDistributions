@@ -16,7 +16,7 @@ def DegreeDistribution(G):
     return pmf
 
 
-def SizeBiasedDegreeDistribution(G, validate=False):
+def RandomFriendDegreeDistribution(G):
 
     # size of network
     n = G.number_of_nodes()
@@ -38,6 +38,6 @@ def SizeBiasedDegreeDistribution(G, validate=False):
 
     return pmf
 
-def RandomFriendDegreeDistribution(G):
+def SizeBiasedDegreeDistribution(G):
     pass
 
