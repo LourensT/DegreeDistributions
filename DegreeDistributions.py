@@ -5,7 +5,7 @@ import numpy as np
 
 def DegreeDistribution(G):
     pmf = {}
-    degrees = list(G.degree((n for n in G.nodes())).values())
+    degrees = [G.degree(n) for n in G.nodes()]
     n = len(degrees)
     for v in degrees:
         if v in pmf:
