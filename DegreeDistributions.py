@@ -3,7 +3,7 @@ from networkx.classes.function import degree
 
 import numpy as np
 
-def DegreeDistribution(G):
+def DegreeDistribution(G, tail=False):
     pmf = {}
     degrees = [G.degree(n) for n in G.nodes()]
     n = len(degrees)
@@ -13,10 +13,13 @@ def DegreeDistribution(G):
         else:
             pmf[v] = 1/n
     
-    return pmf
+    if tail:
+        return _tailDistribution(pmf)
+    else:
+        return pmf
 
 
-def RandomFriendDegreeDistribution(G):
+def RandomFriendDegreeDistribution(G, tail=False):
 
     # size of network
     n = G.number_of_nodes()
@@ -36,9 +39,13 @@ def RandomFriendDegreeDistribution(G):
         else:
             pmf[k] = prob
 
-    return pmf
+    if tail:
+        return _tailDistribution(pmf)
+    else:
+        return pmf
 
-def SizeBiasedDegreeDistribution(G):
+
+def SizeBiasedDegreeDistribution(G, tail=False):
     # get normal degree distribution
     pmf_normal = DegreeDistribution(G)
 
@@ -50,5 +57,23 @@ def SizeBiasedDegreeDistribution(G):
     for k in pmf_normal:
         pmf[k] = (k/expectation) * pmf_normal[k]
     
-    return pmf
+    if tail:
+        return _tailDistribution(pmf)
+    else:
+        return pmf
 
+
+'''
+tail 
+'''
+def _tailDistribution(pmf):
+    keys = list(pmf.keys())
+    keys.sort()
+
+    tail = {}
+    prev = 1
+    for key in keys:
+        tail[key] = prev - pmf[key]
+        prev = tail[key]
+    
+    return tail
