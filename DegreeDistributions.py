@@ -12,7 +12,7 @@ def DegreeDistribution(G, tail=False):
             pmf[v] += 1/n
         else:
             pmf[v] = 1/n
-    
+
     if tail:
         return _tailDistribution(pmf)
     else:
@@ -22,8 +22,15 @@ def DegreeDistribution(G, tail=False):
 def RandomFriendDegreeDistribution(G, tail=False):
 
     # size of network
-    n = G.number_of_nodes()
+    #n = G.number_of_nodes()
     
+    # size of network
+    n = 0
+    for node in G.nodes():
+        if len(G.adj[node])>0:
+            n += 1
+
+
     # setting the pmf
     pmf = {}
     for node in G.nodes():
@@ -39,6 +46,8 @@ def RandomFriendDegreeDistribution(G, tail=False):
         else:
             pmf[k] = prob
 
+    print('sum of pmf', sum(pmf.values()))
+
     if tail:
         return _tailDistribution(pmf)
     else:
@@ -51,6 +60,7 @@ def SizeBiasedDegreeDistribution(G, tail=False):
 
     # get expectation of normal distribution
     expectation = sum(p*k for (p,k) in pmf_normal.items())
+    print(expectation)
 
     # apply size-biased definition (1.2.2)
     pmf = {}
