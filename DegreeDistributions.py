@@ -12,6 +12,8 @@ def DegreeDistribution(G, tail=False):
             pmf[v] += 1/n
         else:
             pmf[v] = 1/n
+
+    assert abs(sum(pmf.values()) - 1.) < 0.0001, f"pmf does not sum to one, but to {sum(pmf.values())}"
     
     if tail:
         return _tailDistribution(pmf)
@@ -39,6 +41,8 @@ def RandomFriendDegreeDistribution(G, tail=False):
         else:
             pmf[k] = prob
 
+    assert abs(sum(pmf.values()) - 1.) < 0.0001, "pmf does not sum to one"
+
     if tail:
         return _tailDistribution(pmf)
     else:
@@ -57,6 +61,8 @@ def SizeBiasedDegreeDistribution(G, tail=False):
     for k in pmf_normal:
         pmf[k] = (k/expectation) * pmf_normal[k]
     
+    assert abs(sum(pmf.values()) - 1.) < 0.0001, "pmf does not sum to one"
+
     if tail:
         return _tailDistribution(pmf)
     else:
@@ -76,4 +82,6 @@ def _tailDistribution(pmf):
         tail[key] = prev - pmf[key]
         prev = tail[key]
     
+    tail.pop(keys[-1])
+
     return tail
