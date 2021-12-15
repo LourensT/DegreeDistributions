@@ -25,7 +25,7 @@ def DegreeDistribution(G, tail=False, density=True):
     
     if tail:
         if not density:
-            ValueError("cannot calculate Tail for non-density")
+            raise ValueError("cannot calculate Tail for non-density")
         return _tailDistribution(pmf)
     else:
         return pmf
