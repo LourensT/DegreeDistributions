@@ -3,19 +3,29 @@ from networkx.classes.function import degree
 
 import numpy as np
 
-def DegreeDistribution(G, tail=False):
+def DegreeDistribution(G, tail=False, density=True):
     pmf = {}
     degrees = [G.degree(n) for n in G.nodes()]
     n = len(degrees)
+    if density:
+        increment = 1/n
+    else:
+        increment = 1
+    
     for v in degrees:
         if v in pmf:
-            pmf[v] += 1/n
+            pmf[v] += increment
         else:
-            pmf[v] = 1/n
+            pmf[v] = increment
 
-    assert abs(sum(pmf.values()) - 1.) < 0.0001, f"pmf does not sum to one, but to {sum(pmf.values())}"
+    if density:
+        assert abs(sum(pmf.values()) - 1.) < 0.0001, f"pmf does not sum to one, but to {sum(pmf.values())}"
+    else:
+        assert sum(pmf.values()) == n, f"pmf does not sum to number of nodes, but to {sum(pmf.values())}"
     
     if tail:
+        if not density:
+            ValueError("cannot calculate Tail for non-density")
         return _tailDistribution(pmf)
     else:
         return pmf
