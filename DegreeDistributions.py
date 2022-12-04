@@ -24,9 +24,9 @@ def DegreeDistribution(G, tail=False, density=True):
         assert sum(pmf.values()) == n, f"pmf does not sum to number of nodes, but to {sum(pmf.values())}"
     
     if tail:
-        if not density:
-            raise ValueError("cannot calculate Tail for non-density")
-        return _tailDistribution(pmf)
+        #if not density:
+            # raise ValueError("cannot calculate Tail for non-density")
+        return _tailDistribution(pmf, density=density)
     else:
         return pmf
 
@@ -90,12 +90,15 @@ def SizeBiasedDegreeDistribution(G, tail=False):
 '''
 tail 
 '''
-def _tailDistribution(pmf):
+def _tailDistribution(pmf, density=True):
     keys = list(pmf.keys())
     keys.sort()
 
     tail = {}
-    prev = 1
+    if density:
+        prev = 1
+    else:
+        prev = sum(pmf.values())
     for key in keys:
         tail[key] = prev - pmf[key]
         prev = tail[key]
